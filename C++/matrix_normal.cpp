@@ -1,4 +1,4 @@
-//Librerias
+//Librerias mod
 #include <iostream>
 #include <ctime>
 #include <algorithm>
@@ -88,26 +88,6 @@ int main()
     matrix_c=matrix(matrix_a, matrix_b,size);
     printf("\nimpresion de la matriz final c");
     print(matrix_c,size);
-    /*
-      for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size; j++)
-        {
-            if (j == 1)
-            {
-                printf("el valor de la posicion %d %d es %d \n",i,j,matrix[i][j]);
-            }
-            else
-            {
-                
-                printf("el valor de la posicion %d %d es %d ",i,j,matrix[i][j]);
-            }
-             
-        }
-        
-    }
-    
-    */ // Impresion
     
 
 }
