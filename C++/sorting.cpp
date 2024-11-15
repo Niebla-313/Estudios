@@ -1,10 +1,12 @@
+//Librerias
+#include <stdio.h>
 #include <iostream>
 #include <ctime>
 #include <algorithm>
 
 
 using namespace std;
-
+//Funciones
 void print_array(int arr[], int n) {
     for (int i = 0; i < n; i++)
         cout << arr[i] << " ";
@@ -140,16 +142,49 @@ void merge_sort (int arr[], int p, int r, int x) {
     merge_sort (arr, q+1, r, x);
     merge (arr, p, q, r, x);
 }
-
+// Main
 int main () {
-    srand(time(NULL));
+    srand(time(NULL));// random.
     int x = rand () % 2;    
     int arr[20];
     int n = sizeof(arr)/sizeof(arr[0]);
     for (int i = 0; i < n; i++)
         arr[i] = rand () % 100 + 1;
     print_array (arr, n);
-    insertion_sort (arr, n, x);
+    //Modificaciones para seleccionar el tipo de arreglo.
+    bool not_selection = true;
+    int option = -1;
+    while(not_selection)
+    {
+        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n");
+        scanf("%d",&option);
+        if((option < 3) && (option >= 0)) // verificacion.
+        {
+            not_selection=false; // salir de bucle.
+            switch (option)
+            {
+                case 0:
+                selection_sort(arr,n,x);
+                break;
+
+                case 1:
+                bubble_sort(arr,n,x);
+                break;
+
+                case 2:
+                merge_sort(arr,0,n,x);
+                break;
+
+            }
+        }
+        else
+        {
+            printf("Ingrese un valor comprendido entre 0 y 2. \n");
+
+        }
+    }
+    // Fin de modificacion.
+    /*insertion_sort (arr, n, x);*/ // Si quitas la modificacion habilitas estos.
     print_array (arr, n);
     return 0;
 
