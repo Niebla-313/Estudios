@@ -3,8 +3,6 @@
 #include <iostream>
 #include <ctime>
 #include <algorithm>
-
-
 using namespace std;
 //Funciones
 void print_array(int arr[], int n) {
