@@ -5,12 +5,23 @@
 
 using namespace std;
 // Funtions
-void matrix(int **matrix_a, int **matrix_b, int **matrix_c, int size)
+int** matrix(int **matrix_a, int **matrix_b, int size)
 {
  //Caso de parada.
- if (size == 1)// cuando la matriz es de un solo valor
+ if (size == 2)// cuando la matriz es de dos valores.
  {
-    matrix_c[size-1][size-1]=matrix_a[size-1][size-1]*matrix_b[size-1][size-1];
+    int MA_11=matrix_a[0][0], MA_12=matrix_a[0][1], MA_21=matrix_a[1][0], MA_22=matrix_a[1][1]; //Division de la matrix a.
+    int MB_11=matrix_b[0][0], MB_12=matrix_b[0][1], MB_21=matrix_b[1][0], MB_22=matrix_b[1][1]; //Division de la matrix b.
+    int P_1= MA_11*(MB_12-MB_22);
+    int P_2= (MA_11+MA_12)*MB_22;
+    int P_3= (MA_21+MA_22)*MB_11;
+    int P_4= MA_22*(MB_21-MB_11);
+    int P_5= (MA_11+MA_22)*(MB_11+MB_12);
+    int P_6= (MA_12-MA_22)*(MB_21+MB_22);
+    int P_7= (MA_11-MA_21)*(MB_11+MB_12);
+    //Creacion de los 4 elementos de la solución.
+    
+    return ;
  }
  else
  {
@@ -74,7 +85,7 @@ int main()
     print(matrix_b,size);
     printf("\nimpresion de la matriz c");
     print(matrix_c,size);
-    matrix(matrix_a, matrix_b, matrix_c,size);
+    matrix_c=matrix(matrix_a, matrix_b,size);
     printf("\nimpresion de la matriz final c");
     print(matrix_c,size);
     /*
