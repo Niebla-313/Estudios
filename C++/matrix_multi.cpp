@@ -4,11 +4,18 @@
 
 using namespace std;
 
+
+
 void matrix_multi (int** a, int** b, int** c, int n) {
+    //Aqui es donde es el asunto. Que al parecer las matrices no se pasan por referencia y al momento de llegar al caso base. 
+    // como esta lleno de datos basura da eso valores todos locos.
     if (n == 1) {
         c[0][0] += a[0][0] * b[0][0];
         return;
     }
+
+    // aqui es donde no entiendo que chucha. basicamente la idea es que agarras una matriz cuadrada de base 2, si la matriz no es de tamano 1x1. 
+    // Aplicas recursividad y la divides en 4 matrices mas pequenas. por  eso el a11 a12 ... etc
     int mid = 0;
     mid = n / 2;
     int** a11 = new int*[n];
@@ -38,7 +45,10 @@ void matrix_multi (int** a, int** b, int** c, int n) {
         c21[i] = new int[n];
         c22[i] = new int[n];
     }
+    //aqui termino de inicializar las matrices
 
+
+    //aqui copia las submatrices
     for (int i = 0; i < mid; i++) {
         for (int j = 0; j < mid; j++) {
             a11[i][j] = a[i][j];
@@ -55,6 +65,7 @@ void matrix_multi (int** a, int** b, int** c, int n) {
             c22[i + mid][j + mid] = c[i + mid][j + mid];    
         }
     }
+    // Y aqui aplico la recursividad
     matrix_multi (a11, b11, c11, mid);
     matrix_multi (a11, b12, c12, mid);
     matrix_multi (a21, b11, c21, mid);
@@ -101,6 +112,8 @@ int main () {
     int** a = new int*[2];
     int** b = new int*[2];
     int** c = new int*[2];
+
+    //ignora el desmadre xd, basicamente inicializo las matrices. las lleno de numeros aleatorios y llamo la funcion. y lo de abajo es para imprimir, aqui no deberia haber problema.
 
     for (int i = 0; i < 2; i++) {
         a[i] = new int[2];
