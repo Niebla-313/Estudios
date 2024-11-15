@@ -3,8 +3,6 @@
 #include <iostream>
 #include <ctime>
 #include <algorithm>
-
-
 using namespace std;
 //Funciones
 int partition (int arr[], int start, int end, int x) {
