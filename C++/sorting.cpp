@@ -1,5 +1,5 @@
 //Librerias
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 #include <ctime>
 #include <algorithm>
@@ -7,6 +7,39 @@
 
 using namespace std;
 //Funciones
+int partition (int arr[], int start, int end, int x) {
+    if(x) { 
+    int pivot = arr[end];
+    int pIndex = start;
+    for (int i = start; i < end; i++) {
+        if (arr[i] <= pivot) {
+            swap(arr[i], arr[pIndex]);
+            pIndex++;
+        }
+    }
+    swap(arr[pIndex], arr[end]);
+    return pIndex;
+    } else {
+    int pivot = arr[end];
+    int pIndex = start;
+    for (int i = start; i < end; i++) {
+        if (arr[i] >= pivot) {
+            swap(arr[i], arr[pIndex]);
+            pIndex++;
+        }
+    }
+    swap(arr[pIndex], arr[end]);
+    return pIndex;
+    }
+}
+void quick_sort (int arr[], int start, int end, int x) {
+    if (start >= end)
+        return;
+    int pivot = partition(arr, start, end, x);
+    quick_sort (arr, start, pivot - 1, x);
+    quick_sort (arr, pivot + 1, end, x);
+}
+
 void print_array(int arr[], int n) {
     for (int i = 0; i < n; i++)
         cout << arr[i] << " ";
@@ -145,7 +178,7 @@ void merge_sort (int arr[], int p, int r, int x) {
 // Main
 int main () {
     srand(time(NULL));// random.
-    int x = rand () % 2;    
+    int x = rand() % 2;    
     int arr[20];
     int n = sizeof(arr)/sizeof(arr[0]);
     for (int i = 0; i < n; i++)
@@ -156,9 +189,9 @@ int main () {
     int option = -1;
     while(not_selection)
     {
-        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n");
+        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n 3 = Quick sort.\n");
         scanf("%d",&option);
-        if((option < 3) && (option >= 0)) // verificacion.
+        if((option < 4) && (option >= 0)) // verificacion.
         {
             not_selection=false; // salir de bucle.
             switch (option)
@@ -172,14 +205,17 @@ int main () {
                 break;
 
                 case 2:
-                merge_sort(arr,0,n,x);
+                merge_sort(arr,0,n-1,x);
                 break;
+
+                case 3:
+                quick_sort (arr, 0, n - 1, x);
 
             }
         }
         else
         {
-            printf("Ingrese un valor comprendido entre 0 y 2. \n");
+            printf("Ingrese un valor comprendido entre 0 y 3. \n");
 
         }
     }
