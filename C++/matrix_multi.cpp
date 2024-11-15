@@ -91,6 +91,7 @@ void matrix_multi (int** a, int** b, int** c, int n) {
     delete[] c21;
     delete[] c22;
 
+
 }
 
 
