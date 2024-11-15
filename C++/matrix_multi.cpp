@@ -2,7 +2,6 @@
 #include <ctime>
 #include <algorithm>
 
-
 using namespace std;
 
 void matrix_multi (int** a, int** b, int** c, int n) {
