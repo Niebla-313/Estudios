@@ -12,7 +12,19 @@ Matrix create_matrix(int n) {   //Para no tener que estar repitiendo esto tanto 
     for (int i = 0; i < n; i++) {
         new_matrix[i] = new int[n];
     }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            new_matrix[i][j] = 0;
+        }
+    }
     return new_matrix;
+}
+
+void delete_matrix (Matrix A, int n) {  //liberar mimeria utilizada por las matrices
+    for (int i = 0; i < n; i++) {
+        delete[] A[i];
+    }
+    delete[] A;
 }
 
 void print_matrix (Matrix A, int n) {   //imprime la matriz

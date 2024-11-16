@@ -5,6 +5,7 @@
 // PD no he corrido esto en mi pc si no en un compilador online, porque esto se puso popis, no se porque, y no me quiere compilar xd
 #include <iostream>
 #include <algorithm>
+#include <cstdlib>
 #include <ctime>
 #include "matrix_operation.cpp"
 
@@ -14,8 +15,9 @@ using Matrix = int**; // investigando descubri que puedo hacer esto para en vez 
 Matrix strassen (Matrix A, Matrix B, int n) {
     if (n == 1) {
         return linear_matrix_multi(A, B, n);    //Para hacer el caso base, cree esta funcion, y me funciono. mas que nada porque como habia puesto que la funcion strassen devolviera una matriz.
-    }                                           //con esta funcion puedo retornar una matriz sin ningun problema.
+    }                                 //con esta funcion puedo retornar una matriz sin ningun problema.
     int mid = n / 2;
+
     Matrix C = create_matrix(n);                //esta la matriz que retorbara al final con la union de C11 C12 C21 y C22
 
     Matrix A11 = create_matrix(mid);            //Como dije en el otro codigo esta funcion inicializa las matrices y se ve gonito.
@@ -63,6 +65,7 @@ Matrix strassen (Matrix A, Matrix B, int n) {
     Matrix C12 = matrix_add(P1, P2, mid);
     Matrix C21 = matrix_add(P3, P4, mid);
     Matrix C22 = matrix_substraction(matrix_substraction(matrix_add(P1, P5, mid),P3, mid), P7, mid);
+    
 
      for (int i = 0; i < mid; i++) {            //Aqui lleno C, y abajo retorno. y listo
         for (int j = 0; j < mid; j++) {
@@ -72,11 +75,13 @@ Matrix strassen (Matrix A, Matrix B, int n) {
             C[i + mid][j + mid] = C22[i][j];
         }
     }
-    return C;
+        return C;
 }
 
 int main () {
-    int n = 4;
+    int n = 0;
+    cout << "Por favor ingrese un numero entero potencia de 2, para establecer tamano de las raices: ";
+    cin >> n;
     Matrix A = create_matrix(n);
     Matrix B = create_matrix(n);
     random_matrix(A, n);
