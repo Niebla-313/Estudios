@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <ctime>
+#include <sys/time.h> /*Libreria para obtener los microsegundos*/
 
 using namespace std;
 using Matrix = int**;
@@ -44,8 +45,11 @@ Matrix matrix_substraction (Matrix A, Matrix B, int n) {    //restica de matrice
     return C;
 }
 
-void random_matrix (Matrix &A, int n) {     //OJO esto se supone que es para inicializar una matriz con numeros random, PERO, no se porque. hago dos llamadas para para las matrices A y B en el main
-    srand(time(NULL));                      // y me llena ambas matrices con los mismo numeros, si quieres lo revisas.
+void random_matrix (Matrix &A, int n) {  
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    long int timeInMicroseconds = tv.tv_sec * 1000000 + tv.tv_usec;
+    srand(timeInMicroseconds);                      
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             A[i][j] = rand() % 10;
