@@ -45,11 +45,12 @@ Matrix matrix_substraction (Matrix A, Matrix B, int n) {    //restica de matrice
     return C;
 }
 
-void random_matrix (Matrix &A, int n) {  
+void random_matrix (Matrix &A, int n) {  //Llenado de la matriz
     struct timeval tv;
     gettimeofday(&tv, NULL);
     long int timeInMicroseconds = tv.tv_sec * 1000000 + tv.tv_usec;
-    srand(timeInMicroseconds);                      
+    srand(timeInMicroseconds);
+    printf("%d\n",timeInMicroseconds); /*impresion de las semillas*/                     
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             A[i][j] = rand() % 10;
