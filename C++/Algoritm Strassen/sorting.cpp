@@ -6,6 +6,54 @@
 #include <vector>
 //Funciones
 //PD: hize cambios para en vez de trabajar con arreglos dinamicos, aplicar directamente vectores.
+
+// funcion que imprime un arreglo
+
+void print_array(std::vector<int> arr) {
+    for (auto i : arr)
+        std::cout << i << " ";
+    std::cout << '\n';
+}
+
+// funcion para obtener el elemento maximo en un vector
+int max_element (std::vector<int> array) {
+    int max = 0;
+    for (int i = 0, n = array.size(); i < n; i++) {
+        if (array[i] > max)
+            max = array[i];
+    }
+    return max;
+}
+
+// funcion para obtener elemento minimo en un vector
+int min_element (std::vector<int> array) {
+    int min = 0x7FFFFFFF;
+    for (int i = 0, n = array.size(); i < n; i++) {
+        if (array[i] < min)
+            min = array[i];
+    }
+    return min;
+}
+
+//anadido ordenamiento counting sort
+void counting_sort (std::vector<int> &original_array) {
+    int max = max_element(original_array);
+    int min = min_element(original_array);
+    std::vector<int> output_array(original_array.size(), 0);
+    std::vector<int> counting_array (max - min + 1, 0);
+    for (int i = 0, n = original_array.size(); i < n; i++)
+        counting_array[original_array[i] - min]++;
+    for(int i = 1, n = counting_array.size(); i < n; i++)
+        counting_array[i] += counting_array[i - 1];
+    for (int i = original_array.size() - 1; i >= 0; i--) {
+        output_array[counting_array[original_array[i] - min] - 1] = original_array[i];
+        counting_array[original_array[i] - min]--;
+    }
+    output_array.swap(original_array);
+
+}
+// fin ordenamiento counting sort
+
 // Actualizacion anadido ordenamiento heap sort
 void max_heapify (std::vector<int> &array, int i, int size) {
 
@@ -76,13 +124,6 @@ void quick_sort (std::vector<int> &arr, int start, int end, int x) {
     quick_sort (arr, pivot + 1, end, x);
 }
 //fin del quick sort PD pronto tengo que implementar que el pivote, sea elegido aleatoriamente para mejorar un poco el caso promedio 
-// funcion que imprime un arreglo
-
-void print_array(std::vector<int> arr) {
-    for (auto i : arr)
-        std::cout << i << " ";
-    std::cout << '\n';
-}
 
 // inicio del selection sort
 void selection_sort (std::vector<int> &arr, int n, int x) {     // Basicamente aqui quise hacer la funcion que ordene de menor a mayor y de mayor a menor. El cambio es nada mas cambiar el signo en la linea 18
@@ -234,9 +275,9 @@ int main () {
     int option = -1;
     while(not_selection)
     {
-        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n 3 = Quick sort.\n 4 = Heap sort. \n");
+        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n 3 = Quick sort.\n 4 = Heap sort. \n 5 = Counting sort. \n");
         scanf("%d",&option);
-        if((option < 5) && (option >= 0)) // verificacion.
+        if((option <= 5) && (option >= 0)) // verificacion.
         {
             not_selection=false; // salir de bucle.
             switch (option)
@@ -261,11 +302,15 @@ int main () {
                 heap_sort (arr);
                 break;
 
+                case 5:
+                counting_sort(arr);
+                break;
+
             }
         }
         else
         {
-            printf("Ingrese un valor comprendido entre 0 y 3. \n");
+            printf("Ingrese un valor comprendido entre 0 y 5. \n");
 
         }
     }
