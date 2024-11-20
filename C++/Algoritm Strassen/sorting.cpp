@@ -3,48 +3,89 @@
 #include <iostream>
 #include <ctime>
 #include <algorithm>
-using namespace std;
+#include <vector>
 //Funciones
-int partition (int arr[], int start, int end, int x) {
+//PD: hize cambios para en vez de trabajar con arreglos dinamicos, aplicar directamente vectores.
+// Actualizacion anadido ordenamiento heap sort
+void max_heapify (std::vector<int> &array, int i, int size) {
+
+  int left, right, largest;
+  left = 2 * i + 1;
+  right = 2 * i + 2;
+  if (left <= size && array[left] > array[i]) {
+    largest = left;
+  } else {
+    largest = i;
+  }
+  if (right <= size && array[right] > array[largest]) {
+    largest = right;
+  }
+  if (largest != i) {
+    std::swap(array[i], array[largest]);
+    max_heapify (array, largest, size);
+  }
+}
+
+void build_max_heap (std::vector<int> &array) {
+  for (int i = array.size()/2; i >= 0; i--)
+    max_heapify (array, i, array.size());
+}
+
+void heap_sort (std::vector<int> &array) {
+  build_max_heap (array);
+  int size = array.size() - 1;
+  for (int i = size; i > 0; i--) {
+    std::swap(array[0], array[i]);
+    size--;
+    max_heapify (array, 0, size);
+    
+  }
+}
+// fin heap sort
+//inicio del quick sort
+int partition (std::vector<int> &arr, int start, int end, int x) {
     if(x) { 
     int pivot = arr[end];
     int pIndex = start;
     for (int i = start; i < end; i++) {
         if (arr[i] <= pivot) {
-            swap(arr[i], arr[pIndex]);
+            std::swap(arr[i], arr[pIndex]);
             pIndex++;
         }
     }
-    swap(arr[pIndex], arr[end]);
+    std::swap(arr[pIndex], arr[end]);
     return pIndex;
     } else {
     int pivot = arr[end];
     int pIndex = start;
     for (int i = start; i < end; i++) {
         if (arr[i] >= pivot) {
-            swap(arr[i], arr[pIndex]);
+            std::swap(arr[i], arr[pIndex]);
             pIndex++;
         }
     }
-    swap(arr[pIndex], arr[end]);
+    std::swap(arr[pIndex], arr[end]);
     return pIndex;
     }
 }
-void quick_sort (int arr[], int start, int end, int x) {
+void quick_sort (std::vector<int> &arr, int start, int end, int x) {
     if (start >= end)
         return;
     int pivot = partition(arr, start, end, x);
     quick_sort (arr, start, pivot - 1, x);
     quick_sort (arr, pivot + 1, end, x);
 }
+//fin del quick sort PD pronto tengo que implementar que el pivote, sea elegido aleatoriamente para mejorar un poco el caso promedio 
+// funcion que imprime un arreglo
 
-void print_array(int arr[], int n) {
-    for (int i = 0; i < n; i++)
-        cout << arr[i] << " ";
-    cout << endl;
+void print_array(std::vector<int> arr) {
+    for (auto i : arr)
+        std::cout << i << " ";
+    std::cout << '\n';
 }
 
-void selection_sort (int arr[], int n, int x) {     // Basicamente aqui quise hacer la funcion que ordene de menor a mayor y de mayor a menor. El cambio es nada mas cambiar el signo en la linea 18
+// inicio del selection sort
+void selection_sort (std::vector<int> &arr, int n, int x) {     // Basicamente aqui quise hacer la funcion que ordene de menor a mayor y de mayor a menor. El cambio es nada mas cambiar el signo en la linea 18
     int small = 0;                                  // y ya. hice un if para hacer las dos versiones, i si x es verdad, menor a mayor, si es falso, mayor a menor.
     if (x) {                                        // no se si hay una forma en c++ de hacer un if que solo cambie el signo para ahorrarse codigo.
         for (int i = 0; i < n; i++) {               // en las demas funciones es igual.
@@ -52,7 +93,7 @@ void selection_sort (int arr[], int n, int x) {     // Basicamente aqui quise ha
                 if (arr[j] < arr[small])
                     small = j;
                 }
-            swap (arr[i], arr[small]);
+            std::swap (arr[i], arr[small]);
             small = i+1;
         }
         
@@ -62,20 +103,21 @@ void selection_sort (int arr[], int n, int x) {     // Basicamente aqui quise ha
                 if (arr[j] > arr[small])
                     small = j;
                 }
-            swap (arr[i], arr[small]);
+            std::swap (arr[i], arr[small]);
             small = i+1;
         }
 
     }
 }
+// el fin
 
-
-void bubble_sort (int arr[], int n, int x) {
+//Burbuja sort, muy ineficiente, pero oye is free
+void bubble_sort (std::vector<int> &arr, int n, int x) {
     if (x) {
         for (int i = 0; i < n; i++) {
             for (int j = n - 1; j > i; j--) {
                     if (arr[j] < arr[j - 1])
-                        swap (arr[j], arr[j - 1]);
+                        std::swap (arr[j], arr[j - 1]);
             }
 
         }
@@ -83,13 +125,14 @@ void bubble_sort (int arr[], int n, int x) {
         for (int i = 0; i < n; i++) {
             for (int j = n - 1; j > i; j--) {
                     if (arr[j] > arr[j - 1])
-                        swap (arr[j], arr[j - 1]);
+                        std::swap (arr[j], arr[j - 1]);
             }
         }
     }
 }
 
-void insertion_sort (int arr[], int n, int x) {
+// insertion sort, ideal para ordenar vectores de tamano pequeno
+void insertion_sort (std::vector<int> &arr, int n, int x) {
     
     int temp, j = 0;
     if (x) {
@@ -115,7 +158,9 @@ void insertion_sort (int arr[], int n, int x) {
     }
 }
 
-void merge (int arr[], int p, int q, int r, int x) {
+
+// inicio del merge sort
+void merge (std::vector<int> &arr, int p, int q, int r, int x) {
     int nl = q - p + 1;
     int nr = r - q;
     int L[nl];
@@ -165,7 +210,7 @@ void merge (int arr[], int p, int q, int r, int x) {
 }
 
 
-void merge_sort (int arr[], int p, int r, int x) {
+void merge_sort (std::vector<int> &arr, int p, int r, int x) {
     if (p >= r)
         return;
     int q = (p + r) / 2;
@@ -173,23 +218,25 @@ void merge_sort (int arr[], int p, int r, int x) {
     merge_sort (arr, q+1, r, x);
     merge (arr, p, q, r, x);
 }
+
+// fin del merge sort
 // Main
 int main () {
     srand(time(NULL));// random.
     int x = rand() % 2;    
-    int arr[20];
-    int n = sizeof(arr)/sizeof(arr[0]);
+    std::vector<int> arr (20, 0);
+    int n = arr.size();
     for (int i = 0; i < n; i++)
         arr[i] = rand () % 100 + 1;
-    print_array (arr, n);
+    print_array (arr);
     //Modificaciones para seleccionar el tipo de arreglo.
     bool not_selection = true;
     int option = -1;
     while(not_selection)
     {
-        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n 3 = Quick sort.\n");
+        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n 3 = Quick sort.\n 4 = Heap sort. \n");
         scanf("%d",&option);
-        if((option < 4) && (option >= 0)) // verificacion.
+        if((option < 5) && (option >= 0)) // verificacion.
         {
             not_selection=false; // salir de bucle.
             switch (option)
@@ -208,6 +255,11 @@ int main () {
 
                 case 3:
                 quick_sort (arr, 0, n - 1, x);
+                break;
+
+                case 4:
+                heap_sort (arr);
+                break;
 
             }
         }
@@ -219,7 +271,7 @@ int main () {
     }
     // Fin de modificacion.
     /*insertion_sort (arr, n, x);*/ // Si quitas la modificacion habilitas estos.
-    print_array (arr, n);
+    print_array (arr);
     return 0;
 
 }
