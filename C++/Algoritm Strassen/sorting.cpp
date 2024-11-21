@@ -6,7 +6,7 @@
 #include <vector>
 //Funciones
 //PD: hize cambios para en vez de trabajar con arreglos dinamicos, aplicar directamente vectores.
-
+void counting_sort (std::vector<int> &original_array);
 // funcion que imprime un arreglo
 
 void print_array(std::vector<int> arr) {
@@ -34,6 +34,32 @@ int min_element (std::vector<int> array) {
     }
     return min;
 }
+
+// anadido radix sort
+void counting_sort_radix (std::vector<int> &original_array, unsigned int exp) {
+    int max = max_element(original_array);
+    int min = min_element(original_array);
+    max = max / exp;
+    min = min / exp;
+    std::vector<int> output_array(original_array.size(), 0);
+    std::vector<int> counting_array (max - min + 1, 0);
+    for (int i = 0, n = original_array.size(); i < n; i++)
+        counting_array[(original_array[i] - min) / exp]++;
+    for(int i = 1, n = counting_array.size(); i < n; i++)
+        counting_array[i] += counting_array[i - 1];
+    for (int i = original_array.size() - 1; i >= 0; i--) {
+        output_array[counting_array[(original_array[i] - min) / exp] - 1] = original_array[i];
+        counting_array[(original_array[i] - min) / exp]--;
+    }
+    output_array.swap(original_array);
+
+}
+void radix_sort (std::vector<int> &array) {
+    int count_digit = max_element(array);
+    for (int exp = 1; count_digit / exp > 0; exp *= 10)
+        counting_sort_radix(array, exp);
+}
+
 
 //anadido ordenamiento counting sort
 void counting_sort (std::vector<int> &original_array) {
@@ -275,9 +301,9 @@ int main () {
     int option = -1;
     while(not_selection)
     {
-        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n 3 = Quick sort.\n 4 = Heap sort. \n 5 = Counting sort. \n");
+        printf("Seleccione una opcion para proceder con el ordenamiento:\n 0 = Selection Sort. \n 1 = Bubble Sort. \n 2 = Merge Sort.\n 3 = Quick sort.\n 4 = Heap sort. \n 5 = Counting sort. \n 6 = Radix sort. \n");
         scanf("%d",&option);
-        if((option <= 5) && (option >= 0)) // verificacion.
+        if((option <= 6) && (option >= 0)) // verificacion.
         {
             not_selection=false; // salir de bucle.
             switch (option)
@@ -304,6 +330,10 @@ int main () {
 
                 case 5:
                 counting_sort(arr);
+                break;
+
+                case 6:
+                radix_sort(arr);
                 break;
 
             }
