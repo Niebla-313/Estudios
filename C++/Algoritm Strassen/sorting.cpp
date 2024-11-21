@@ -37,27 +37,26 @@ int min_element (std::vector<int> array) {
 
 // anadido radix sort
 void counting_sort_radix (std::vector<int> &original_array, unsigned int exp) {
-    int max = max_element(original_array);
-    int min = min_element(original_array);
-    max = max / exp;
-    min = min / exp;
     std::vector<int> output_array(original_array.size(), 0);
-    std::vector<int> counting_array (max - min + 1, 0);
+    std::vector<int> counting_array (10, 0);
     for (int i = 0, n = original_array.size(); i < n; i++)
-        counting_array[(original_array[i] - min) / exp]++;
+        counting_array[(original_array[i] / exp) % 10]++;
     for(int i = 1, n = counting_array.size(); i < n; i++)
         counting_array[i] += counting_array[i - 1];
     for (int i = original_array.size() - 1; i >= 0; i--) {
-        output_array[counting_array[(original_array[i] - min) / exp] - 1] = original_array[i];
-        counting_array[(original_array[i] - min) / exp]--;
+        output_array[counting_array[(original_array[i] / exp) % 10] - 1] = original_array[i];
+        counting_array[(original_array[i] / exp) % 10]--;
     }
     output_array.swap(original_array);
 
 }
 void radix_sort (std::vector<int> &array) {
     int count_digit = max_element(array);
-    for (int exp = 1; count_digit / exp > 0; exp *= 10)
+    for (int exp = 1; count_digit / exp > 0; exp *= 10) {
         counting_sort_radix(array, exp);
+        print_array(array);
+    }
+
 }
 
 
@@ -291,10 +290,10 @@ void merge_sort (std::vector<int> &arr, int p, int r, int x) {
 int main () {
     srand(time(NULL));// random.
     int x = rand() % 2;    
-    std::vector<int> arr (20, 0);
+    std::vector<int> arr (10, 0);
     int n = arr.size();
     for (int i = 0; i < n; i++)
-        arr[i] = rand () % 100 + 1;
+        arr[i] = rand () % 1000000 + 1;
     print_array (arr);
     //Modificaciones para seleccionar el tipo de arreglo.
     bool not_selection = true;
